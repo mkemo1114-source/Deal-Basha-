@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Basha | ديل باشا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           1. الإعدادات العامة والخلفية
+           ========================================= */
+        :root {
+            --primary-navy: #0b1c3c;
+            --primary-teal: #008080;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --danger: #e74c3c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            /* تم وضع رابط صورة الباشا هنا */
+            background-image: linear-gradient(rgba(11, 28, 60, 0.85), rgba(11, 28, 60, 0.95)), url('https://i.ibb.co/d03v4wwY/IMG-20261023-WA5986.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--white);
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        /* =========================================
+           2. الهيدر (اللوجو)
+           ========================================= */
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(11, 28, 60, 0.9);
+            border-bottom: 3px solid var(--gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: var(--white);
+            margin-top: 10px;
+        }
+
+        /* =========================================
+           3. أقسام المنتجات
+           ========================================= */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            border-right: 5px solid var(--gold);
+            padding-right: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            display: inline-block;
+            padding: 5px 15px 5px 30px;
+            border-radius: 5px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+            border-color: var(--gold);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .order-btn {
+            background: var(--primary-teal);
+            color: var(--white);
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .order-btn:hover {
+            background: var(--gold);
+            color: var(--primary-navy);
+        }
+
+        /* =========================================
+           4. الفورم (المودال)
+           ========================================= */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--primary-navy);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid var(--gold);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 1.5rem;
+            color: var(--danger);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+        }
+
+        .phone-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .phone-input-group select {
+            width: 35%;
+        }
+
+        .phone-input-group input {
+            width: 65%;
+        }
+
+        .submit-btn {
+            background: var(--gold);
+            color: var(--primary-navy);
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #f1c40f;
+        }
+
+        .error-msg {
+            color: var(--danger);
+            font-size: 0.85rem;
+            display: none;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <header>
+        <h1>Deal Basha | ديل باشا 👑</h1>
+        <p>وسيطك الآمن.. استلم، اتفرج، وبعدين ادفع!</p>
+    </header>
+
+    <!-- محتوى الموقع -->
+    <div class="container">
+        
+        <!-- قسم التكنولوجيا -->
+        <h2 class="section-title">💻 قسم التكنولوجيا والإلكترونيات</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <img src="https://i.ibb.co/v4GY3Dt6/IMG-20261023-WA0370.png" alt="موبايل" class="product-image">
+                <h3 class="product-title"> المنتج غير متوفر حالياً</h3>
+                <p class="product-price"> المنتج غير متوفر حالياً</p>
+                <button class="order-btn" onclick="openOrderForm('المنتج غير متوفر حالياً')">اطلب المنتج</button>
+            </div>
+            <div class="product-card">
+                <img src="https://i.ibb.co/v4GY3Dt6/IMG-20261023-WA0370.png" alt="موبايل" class="product-image">
+                <h3 class="product-title"> المنتج غير متوفر حالياً</h3>
+                <p class="product-price"> المنتج غير متوفر حالياً</p>
+                <button class="order-btn" onclick="openOrderForm('المنتج غير متوفر حالياً')">اطلب المنتج</button>
+            </div>
+        </div>
+
+        <!-- قسم الملابس -->
+        <h2 class="section-title">👕 قسم الملابس والأزياء</h2>
+        <div class="products-grid">
+       <div class="product-card">
+                <img src="https://i.ibb.co/v4GY3Dt6/IMG-20261023-WA0370.png" alt="ملابس" class="product-image">
+                <h3 class="product-title"> المنتج غير متوفر حالياً</h3>
+                <p class="product-price"> المنتج غير متوفر حالياً</p>
+                <button class="order-btn" onclick="openOrderForm('المنتج غير متوفر حالياً')">اطلب المنتج</button>
+            </div>
+            <div class="product-card">
+                <img src="https://i.ibb.co/v4GY3Dt6/IMG-20261023-WA0370.png" alt="ملابس " class="product-image">
+                <h3 class="product-title"> المنتج غير متوفر حالياً</h3>
+                <p class="product-price"> المنتج غير متوفر حالياً</p>
+                <button class="order-btn" onclick="openOrderForm('المنتج غير متوفر حالياً')">اطلب المنتج</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- الفورم (المودال) المخفي -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeOrderForm()">&times;</span>
+            <h2>تأكيد طلبك يا باشا 👑</h2>
+            <p style="text-align: center; margin-bottom: 15px; color: var(--gold);" id="productNameDisplay"></p>
+
+            <!-- الفورم بيتبعت على ايميلك عن طريق FormSubmit -->
+            <form action="https://formsubmit.co/mkemo1114@gmail.com" method="POST" id="orderForm">
+                <!-- إعدادات إخفاء الكابتشا -->
+                <input type="hidden" name="_captcha" value="false">
+                
+                <!-- 🚀 السطر السحري: بيرجع العميل لموقعك بدل صفحة الشكر -->
+                <input type="hidden" name="_next" value="https://2u.pw/bWRZrk">
+
+                <input type="hidden" name="المنتج_المطلوب" id="selectedProductInput">
+
+                <div class="form-group">
+                    <label>الاسم الرباعي (مطلوب)</label>
+                    <input type="text" name="الاسم_الرباعي" required placeholder="مثال: أحمد محمد علي حسن">
+                </div>
+
+                <div class="form-group">
+                    <label>رقم التليفون (11 رقم)</label>
+                    <div class="phone-input-group">
+                        <select name="كود_الدولة" id="countryCode">
+                            <option value="+20">مصر +20</option>
+                            <option value="+966">السعودية +966</option>
+                            <option value="+971">الإمارات +971</option>
+                            <option value="+965">الكويت +965</option>
+                            <option value="+974">قطر +974</option>
+                        </select>
+                        <input type="tel" name="رقم_التليفون" id="phoneNumber" required placeholder="01xxxxxxxxx" maxlength="11">
+                    </div>
+                    <span class="error-msg" id="phoneError">لازم رقم التليفون يكون 11 رقم بالظبط!</span>
+                </div>
+
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" name="الايميل" required placeholder="example@gmail.com">
+                </div>
+
+                <div class="form-group">
+                    <label>العنوان بالتفصيل (المحافظة، الشارع، رقم العمارة)</label>
+                    <textarea name="العنوان" rows="3" required placeholder="اكتب عنوانك بالتفصيل عشان الشحن يوصلك بسهولة"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">تأكيد الطلب 🚀</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- أكواد الجافاسكريبت -->
+    <script>
+        const modal = document.getElementById('orderModal');
+        const productDisplay = document.getElementById('productNameDisplay');
+        const selectedProductInput = document.getElementById('selectedProductInput');
+        const orderForm = document.getElementById('orderForm');
+        const phoneNumber = document.getElementById('phoneNumber');
+        const phoneError = document.getElementById('phoneError');
+        const countryCode = document.getElementById('countryCode');
+
+        // فتح الفورم
+        function openOrderForm(productName) {
+            productDisplay.innerText = "المنتج: " + productName;
+            selectedProductInput.value = productName;
+            modal.style.display = 'flex';
+        }
+
+        // قفل الفورم
+        function closeOrderForm() {
+            modal.style.display = 'none';
+            phoneError.style.display = 'none'; 
+        }
+
+        // التحقق من رقم التليفون والإرسال
+        orderForm.addEventListener('submit', function(event) {
+            const phoneVal = phoneNumber.value.trim();
+            const codeVal = countryCode.value;
+
+            // لو كود الدولة مصر (+20)، لازم 11 رقم
+            if (codeVal === '+20' && phoneVal.length !== 11) {
+                event.preventDefault(); 
+                phoneError.style.display = 'block'; 
+                phoneNumber.style.borderColor = 'red';
+            } 
+            // لو كود الدولة تاني
+            else if (codeVal !== '+20' && (phoneVal.length < 9 || phoneVal.length > 11)) {
+                event.preventDefault();
+                phoneError.innerText = "رقم التليفون غير صحيح بالنسبة لكود الدولة!";
+                phoneError.style.display = 'block';
+                phoneNumber.style.borderColor = 'red';
+            } 
+            else {
+                // لو الأرقام سليمة، الفورم هيتبعت عادي جداً بالطريقة التقليدية
+                // السطر اللي اسمه _next فوق هو اللي هيمنع صفحة الشكر تظهر ويرجع العميل لموقعك
+                phoneError.style.display = 'none';
+                phoneNumber.style.borderColor = '#ccc';
+                
+                // تغيير شكل زرار الإرسال عشان العميل يستنى
+                const submitBtn = document.querySelector('.submit-btn');
+                submitBtn.innerText = 'جاري إرسال الطلب... ⏳';
+                // مش بنعمل event.preventDefault() هنا عشان الفورم يكمل شغله ويروح لـ _next
+            }
+        });
+
+        // تصفير الرسالة لما يكتب
+        phoneNumber.addEventListener('input', function() {
+            phoneError.style.display = 'none';
+            phoneNumber.style.borderColor = '#ccc';
+        });
+
+        // قفل الفورم لو داس في أي مكان برة
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeOrderForm();
+            }
+        }
+    </script>
+</body>
+</html>
